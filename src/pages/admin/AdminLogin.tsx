@@ -25,17 +25,6 @@ export default function AdminLogin() {
       localStorage.setItem("ishq_user", JSON.stringify(result.user));
       navigate("/");
     } catch (err: unknown) {
-      // Fallback demo login if backend server is offline or unreachable
-      if (
-        email.trim().toLowerCase() === "admin@ishq.tn" &&
-        (password === "admin" || password === "admin123" || password === "password")
-      ) {
-        const demoUser = { id: "1", name: "Admin ISHQ", email: "admin@ishq.tn", role: "ADMIN" };
-        localStorage.setItem("ishq_token", "demo_token_ishq_admin");
-        localStorage.setItem("ishq_user", JSON.stringify(demoUser));
-        navigate("/");
-        return;
-      }
       setError(err instanceof Error ? err.message : "Identifiants incorrects.");
     } finally {
       setLoading(false);
@@ -146,4 +135,3 @@ export default function AdminLogin() {
     </div>
   );
 }
-

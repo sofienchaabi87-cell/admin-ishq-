@@ -7,28 +7,11 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || "/api";
 
 export async function ensureAdminToken(): Promise<string> {
   if (typeof window === "undefined") return "";
-  let token = localStorage.getItem("ishq_token");
-  if (token && token !== "null" && token !== "undefined" && token !== "demo_token_ishq_admin") {
-    return token;
+  const token = localStorage.getItem("ishq_token");
+  if (!token || token === "null" || token === "undefined" || token === "demo_token_ishq_admin") {
+    return "";
   }
-  try {
-    const res = await fetch(`${API_BASE_URL}/auth/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: "admin@ishq-parfum.com", password: "admin123" }),
-    });
-    if (res.ok) {
-      const data = await res.json();
-      if (data?.data?.token) {
-        localStorage.setItem("ishq_token", data.data.token);
-        localStorage.setItem("ishq_user", JSON.stringify(data.data.user));
-        return data.data.token;
-      }
-    }
-  } catch (err) {
-    console.warn("Échec connexion auto admin :", err);
-  }
-  return token || "";
+  return token;
 }
 
 // Helper générique pour exécuter les requêtes HTTP
